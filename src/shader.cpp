@@ -17,7 +17,7 @@ Shader &Shader::Use()
 }
 
 void Shader::Compile(const char* vertexSource, const char* fragmentSource, const char* geometrySource)
-{
+{    
     unsigned int sVertex, sFragment, gShader;
     // vertex Shader
     sVertex = glCreateShader(GL_VERTEX_SHADER);
@@ -110,12 +110,12 @@ void Shader::SetMatrix4(const char *name, const glm::mat4 &matrix, bool useShade
 
 void Shader::checkCompileErrors(unsigned int object, std::string type)
 {
-    int success;
+    GLint success;
     char infoLog[1024];
     if (type != "PROGRAM")
     {
         glGetShaderiv(object, GL_COMPILE_STATUS, &success);
-        if (!success)
+        if (success == GL_FALSE)
         {
             glGetShaderInfoLog(object, 1024, NULL, infoLog);
             std::cout << "| ERROR::SHADER: Compile-time error: Type: " << type << "\n"
@@ -126,7 +126,7 @@ void Shader::checkCompileErrors(unsigned int object, std::string type)
     else
     {
         glGetProgramiv(object, GL_LINK_STATUS, &success);
-        if (!success)
+        if (success == GL_FALSE)
         {
             glGetProgramInfoLog(object, 1024, NULL, infoLog);
             std::cout << "| ERROR::Shader: Link-time error: Type: " << type << "\n"
