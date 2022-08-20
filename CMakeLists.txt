@@ -31,4 +31,9 @@ target_link_libraries(${PROJECTNAME} -lpthread)
 target_link_libraries(${PROJECTNAME} -ldl)
 target_link_libraries(${PROJECTNAME} -lGL)
 target_link_libraries(${PROJECTNAME} -lIrrKlang)
+
+# freetype needed
 target_link_libraries(${PROJECTNAME} -lfreetype)
+target_link_libraries(${PROJECTNAME} -lpng)
+target_link_libraries(${PROJECTNAME} -lbz2)     # bzip2
+target_link_libraries(${PROJECTNAME} -lz)       # gzip
