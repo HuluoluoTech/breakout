@@ -84,8 +84,8 @@ void Game::Init()
     // error: cannot bind non-const lvalue reference of type ‘Shader&’ to an rvalue of type ‘Shader’
     // Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
-    static Shader shader = ResourceManager::GetShader("sprite");
-    Renderer = new SpriteRenderer(shader);
+    // static Shader shader = ResourceManager::GetShader("sprite");
+    Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
     Effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
     Text = new TextRenderer(this->Width, this->Height);

@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
  */
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
+    // GLFW_KEY_ESCAPE == 256
     // when a user presses the escape key, we set the WindowShouldClose property to true, closing the application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
