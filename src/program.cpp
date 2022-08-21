@@ -7,6 +7,8 @@
 ** option) any later version.
 ******************************************************************/
 #include <glad/glad.h>
+
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 #include <game.h>
@@ -137,10 +139,14 @@ int main(int argc, char *argv[])
     // when the game loop is shutdown...
     ResourceManager::Clear();
 
+    // https://www.glfw.org/docs/3.3/quick.html#quick_init_term
+    // When a window and context is no longer needed, destroy it.
+    glfwDestroyWindow(window);
+
     // Terminates the GLFW library. 
     // This function destroys all remaining windows and cursors, restores any modified gamma ramps and frees any other allocated resources. 
     glfwTerminate();
-    return 0;
+    exit(EXIT_SUCCESS);
 }
 
 /**
