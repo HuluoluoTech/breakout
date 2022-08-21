@@ -107,6 +107,7 @@ void Game::Init()
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
     // audio
     // SoundEngine->play2D(FileSystem::getPath("resources/audio/breakout.mp3").c_str(), true);
+    SoundEngine->play2D("resources/audio/breakout.mp3", true);
 }
 
 void Game::Update(float dt)
