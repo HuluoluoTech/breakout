@@ -15,15 +15,14 @@
 #include <irrKlang.h>
 using namespace irrklang;
 
-#include <game.h>
-#include <resource_manager.h>
-#include <sprite_renderer.h>
-#include <game_object.h>
-#include <ball_object.h>
-#include <particle_generator.h>
-#include <post_processor.h>
-#include <text_renderer.h>
-
+#include "game.h"
+#include "resource_manager.h"
+#include "sprite_renderer.h"
+#include "game_object.h"
+#include "ball_object.h"
+#include "particle_generator.h"
+#include "post_processor.h"
+#include "text_renderer.h"
 
 // Game-related State data
 SpriteRenderer    *Renderer;
@@ -36,9 +35,15 @@ TextRenderer      *Text;
 
 float ShakeTime = 0.0f;
 
-
 Game::Game(unsigned int width, unsigned int height) 
-    : State(GAME_MENU), Keys(), KeysProcessed(), Width(width), Height(height), Level(0), Lives(3)
+    : 
+    State(GAME_MENU), 
+    Keys(), 
+    KeysProcessed(), 
+    Width(width), 
+    Height(height), 
+    Level(0), 
+    Lives(3)
 { 
 
 }

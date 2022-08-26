@@ -61,16 +61,20 @@ public:
     // constructor/destructor
     Game(unsigned int width, unsigned int height);
     ~Game();
+
     // initialize game state (load all shaders/textures/levels)
     void Init();
+
     // game loop
     void ProcessInput(float dt);
     void Update(float dt);
     void Render();
     void DoCollisions();
+
     // reset
     void ResetLevel();
     void ResetPlayer();
+    
     // powerups
     void SpawnPowerUps(GameObject &block);
     void UpdatePowerUps(float dt);

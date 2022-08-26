@@ -6,7 +6,7 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#include <ball_object.h>
+#include "ball_object.h"
 
 BallObject::BallObject() 
     : GameObject(), Radius(12.5f), Stuck(true), Sticky(false), PassThrough(false)  { }

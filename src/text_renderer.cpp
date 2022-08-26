@@ -10,8 +10,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <text_renderer.h>
-#include <resource_manager.h>
+#include "text_renderer.h"
+#include "resource_manager.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
