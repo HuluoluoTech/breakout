@@ -6,6 +6,20 @@ void Welcome::Init() noexcept
 {
     std::cout << "Welcome Init" << std::endl;
 
+    glfwSetCursorPosCallback(this->Window, [](GLFWwindow* window, double xposIn, double yposIn) {
+        // std::cout << "x : " << xposIn << ", y: " << yposIn << std::endl;
+    });
+
+    glfwSetMouseButtonCallback(this->Window, [](GLFWwindow* window, int button, int action, int mods) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        {
+            double xpos, ypos;
+            //getting cursor position
+            glfwGetCursorPos(window, &xpos, &ypos);
+            std::cout << "Cursor Pressed Position at (" << xpos << " : " << ypos << ")" << std::endl;
+        }
+    });
+
     ResourceManager::LoadShader("../shaders/sprite.vs", "../shaders/sprite.fs", nullptr, "sprite");
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width), static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);

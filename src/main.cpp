@@ -28,7 +28,6 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
 // Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
-Welcome WelcomePage(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main(int argc, char *argv[])
 {
@@ -60,6 +59,8 @@ int main(int argc, char *argv[])
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    Welcome WelcomePage(window, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // sets the key callback of the specified window, which is called when a key is pressed, repeated or released.
     // callback signature:
