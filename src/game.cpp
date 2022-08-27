@@ -127,12 +127,16 @@ void Game::Update(float dt)
 {
     // update objects
     Ball->Move(dt, this->Width);
+
     // check for collisions
     this->DoCollisions();
+
     // update particles
     Particles->Update(dt, *Ball, 2, glm::vec2(Ball->Radius / 2.0f));
+
     // update PowerUps
     this->UpdatePowerUps(dt);
+
     // reduce shake time
     if (ShakeTime > 0.0f)
     {
@@ -231,6 +235,7 @@ void Game::ProcessInputGameActive(float dt)
         }
     }
 
+    // user presses the space bar, the ball’s Stuck variable is set to false.
     if (this->Keys[GLFW_KEY_SPACE])
         Ball->Stuck = false;
 }
@@ -247,7 +252,11 @@ void Game::ProcessInputGameWin()
 
 void Game::Render()
 {
-    if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
+    if (
+        this->State == GAME_ACTIVE || 
+        this->State == GAME_MENU || 
+        this->State == GAME_WIN
+    )
     {
         // begin rendering to postprocessing framebuffer
         Effects->BeginRender();
@@ -256,31 +265,42 @@ void Game::Render()
             // error: cannot bind non-const lvalue reference of type ‘Texture2D&’ to an rvalue of type ‘Texture2D’
             Texture2D texture2d = ResourceManager::GetTexture("background");
             Renderer->DrawSprite(texture2d, glm::vec2(0.0f, 0.0f), glm::vec2(this->Width, this->Height), 0.0f);
+
             // draw level
             this->Levels[this->Level].Draw(*Renderer);
+
             // draw player
             Player->Draw(*Renderer);
+
             // draw PowerUps
             for (PowerUp &powerUp : this->PowerUps)
                 if (!powerUp.Destroyed)
                     powerUp.Draw(*Renderer);
+
             // draw particles	
             Particles->Draw();
+
             // draw ball
-            Ball->Draw(*Renderer);            
+            Ball->Draw(*Renderer);   
+
         // end rendering to postprocessing framebuffer
         Effects->EndRender();
+
         // render postprocessing quad
         Effects->Render(glfwGetTime());
+
         // render text (don't include in postprocessing)
-        std::stringstream ss; ss << this->Lives;
+        std::stringstream ss; 
+        ss << this->Lives;
         Text->RenderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
     }
+
     if (this->State == GAME_MENU)
     {
         Text->RenderText("Press ENTER to start", 250.0f, this->Height / 2.0f, 1.0f);
         Text->RenderText("Press W or S to select level", 245.0f, this->Height / 2.0f + 20.0f, 0.75f);
     }
+    
     if (this->State == GAME_WIN)
     {
         Text->RenderText("You WON!!!", 320.0f, this->Height / 2.0f - 20.0f, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
