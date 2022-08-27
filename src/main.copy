@@ -27,7 +27,7 @@ const unsigned int SCREEN_WIDTH = 800;
 // The height of the screen
 const unsigned int SCREEN_HEIGHT = 600;
 
-// Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
+Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 Welcome WelcomePage(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main(int argc, char *argv[])
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     // initialize game
     // ---------------
     // Breakout.Init();
-    WelcomePage.Init();
+    // WelcomePage.Init();
 
     // deltaTime variables
     // -------------------
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // specify clear values for the color buffers
         glClear(GL_COLOR_BUFFER_BIT); // clear buffers to preset values, glClear sets the bitplane area of the window to values previously selected by glClearColor, glClearDepth, and glClearStencil. 
         // Breakout.Render();
-        WelcomePage.Render();
+        // WelcomePage.Render();
 
         // Swaps the front and back buffers of the specified window. 
         /***********************************************************************************
@@ -142,13 +142,12 @@ int main(int argc, char *argv[])
 
     // delete all resources as loaded using the resource manager
     // when the game loop is shutdown...
-    // ResourceManager::Clear();
+    ResourceManager::Clear();
 
     // https://www.glfw.org/docs/3.3/quick.html#quick_init_term
     // When a window and context is no longer needed, destroy it.
     glfwDestroyWindow(window);
 
-    std::cout << "Ready to Exit..." << std::endl;
     // Terminates the GLFW library. 
     // This function destroys all remaining windows and cursors, restores any modified gamma ramps and frees any other allocated resources. 
     glfwTerminate();
@@ -173,13 +172,13 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 
     if (key >= 0 && key < 1024)
     {
-        // if (action == GLFW_PRESS)
-        //     Breakout.Keys[key] = true;
-        // else if (action == GLFW_RELEASE)
-        // {
-        //     Breakout.Keys[key] = false;
-        //     Breakout.KeysProcessed[key] = false;
-        // }
+        if (action == GLFW_PRESS)
+            Breakout.Keys[key] = true;
+        else if (action == GLFW_RELEASE)
+        {
+            Breakout.Keys[key] = false;
+            Breakout.KeysProcessed[key] = false;
+        }
     }
 }
 

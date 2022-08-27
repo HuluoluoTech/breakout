@@ -1,6 +1,3 @@
-#ifndef CONFIG_ROOT_H
-#define CONFIG_ROOT_H
+#pragma once
 
 const char * logl_root = "/home/ztgx/codespace/Huluoluo/breakout";
-
-#endif
