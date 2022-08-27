@@ -188,18 +188,20 @@ void Game::ProcessInputGameMenu()
         this->State = GAME_ACTIVE;
         this->KeysProcessed[GLFW_KEY_ENTER] = true;
     }
+
     if (this->Keys[GLFW_KEY_W] && !this->KeysProcessed[GLFW_KEY_W])
     {
         this->Level = (this->Level + 1) % 4;
         this->KeysProcessed[GLFW_KEY_W] = true;
     }
+
     if (this->Keys[GLFW_KEY_S] && !this->KeysProcessed[GLFW_KEY_S])
     {
         if (this->Level > 0)
             --this->Level;
         else
             this->Level = 3;
-        //this->Level = (this->Level - 1) % 4;
+
         this->KeysProcessed[GLFW_KEY_S] = true;
     }
 }
@@ -207,6 +209,7 @@ void Game::ProcessInputGameMenu()
 void Game::ProcessInputGameActive(float dt) 
 {
     float velocity = PLAYER_VELOCITY * dt;
+
     // move playerboard
     if (this->Keys[GLFW_KEY_A])
     {
@@ -217,6 +220,7 @@ void Game::ProcessInputGameActive(float dt)
                 Ball->Position.x -= velocity;
         }
     }
+
     if (this->Keys[GLFW_KEY_D])
     {
         if (Player->Position.x <= this->Width - Player->Size.x)
@@ -226,6 +230,7 @@ void Game::ProcessInputGameActive(float dt)
                 Ball->Position.x += velocity;
         }
     }
+
     if (this->Keys[GLFW_KEY_SPACE])
         Ball->Stuck = false;
 }
@@ -286,14 +291,24 @@ void Game::Render()
 
 void Game::ResetLevel()
 {
-    if (this->Level == 0)
+    unsigned int level = this->Level;
+    switch (level)
+    {
+    case 0:
         this->Levels[0].Load("resources/levels/one.lvl", this->Width, this->Height / 2);
-    else if (this->Level == 1)
+        break;
+    case 1:
         this->Levels[1].Load("resources/levels/two.lvl", this->Width, this->Height / 2);
-    else if (this->Level == 2)
+        break;
+    case 2:
         this->Levels[2].Load("resources/levels/three.lvl", this->Width, this->Height / 2);
-    else if (this->Level == 3)
+        break;
+    case 3:
         this->Levels[3].Load("resources/levels/four.lvl", this->Width, this->Height / 2);
+        break;
+    default:
+        break;
+    }
 
     this->Lives = 3;
 }
