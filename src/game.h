@@ -78,6 +78,11 @@ public:
     // powerups
     void SpawnPowerUps(GameObject &block);
     void UpdatePowerUps(float dt);
+
+private:
+    void ProcessInputGameMenu();
+    void ProcessInputGameActive(float dt);
+    void ProcessInputGameWin();
 };
 
 #endif

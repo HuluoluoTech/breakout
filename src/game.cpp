@@ -44,9 +44,7 @@ Game::Game(unsigned int width, unsigned int height)
     Height(height), 
     Level(0), 
     Lives(3)
-{ 
-
-}
+{}
 
 Game::~Game()
 {
@@ -96,23 +94,33 @@ void Game::Init()
     Text = new TextRenderer(this->Width, this->Height);
     Text->Load(FileSystem::getPath("resources/fonts/OCRAEXT.TTF").c_str(), 24);
     // load levels
-    GameLevel one; one.Load(FileSystem::getPath("resources/levels/one.lvl").c_str(), this->Width, this->Height / 2);
-    GameLevel two; two.Load(FileSystem::getPath("resources/levels/two.lvl").c_str(), this->Width, this->Height /2 );
-    GameLevel three; three.Load(FileSystem::getPath("resources/levels/three.lvl").c_str(), this->Width, this->Height / 2);
-    GameLevel four; four.Load(FileSystem::getPath("resources/levels/four.lvl").c_str(), this->Width, this->Height / 2);
+    GameLevel one; 
+    one.Load(FileSystem::getPath("resources/levels/one.lvl").c_str(), this->Width, this->Height / 2);
+
+    GameLevel two; 
+    two.Load(FileSystem::getPath("resources/levels/two.lvl").c_str(), this->Width, this->Height /2 );
+
+    GameLevel three; 
+    three.Load(FileSystem::getPath("resources/levels/three.lvl").c_str(), this->Width, this->Height / 2);
+
+    GameLevel four; 
+    four.Load(FileSystem::getPath("resources/levels/four.lvl").c_str(), this->Width, this->Height / 2);
+
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
     this->Levels.push_back(four);
     this->Level = 0;
+
     // configure game objects
     glm::vec2 playerPos = glm::vec2(this->Width / 2.0f - PLAYER_SIZE.x / 2.0f, this->Height - PLAYER_SIZE.y);
     Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
+
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
+
     // audio
-    // SoundEngine->play2D(FileSystem::getPath("resources/audio/breakout.mp3").c_str(), true);
-    SoundEngine->play2D("resources/audio/breakout.mp3", true);
+    SoundEngine->play2D(FileSystem::getPath("resources/audio/breakout.mp3").c_str(), true);
 }
 
 void Game::Update(float dt)
@@ -154,64 +162,81 @@ void Game::Update(float dt)
     }
 }
 
-
 void Game::ProcessInput(float dt)
 {
-    if (this->State == GAME_MENU)
+    GameState state = this->State;
+    switch (state)
     {
-        if (this->Keys[GLFW_KEY_ENTER] && !this->KeysProcessed[GLFW_KEY_ENTER])
+    case GAME_MENU:
+        ProcessInputGameMenu();
+        break;
+    case GAME_ACTIVE:
+        ProcessInputGameActive(dt);
+        break;
+    case GAME_WIN:
+        ProcessInputGameWin();
+        break;
+    default:
+        std::terminate();
+        break;
+    }
+}
+void Game::ProcessInputGameMenu() 
+{
+    if (this->Keys[GLFW_KEY_ENTER] && !this->KeysProcessed[GLFW_KEY_ENTER])
+    {
+        this->State = GAME_ACTIVE;
+        this->KeysProcessed[GLFW_KEY_ENTER] = true;
+    }
+    if (this->Keys[GLFW_KEY_W] && !this->KeysProcessed[GLFW_KEY_W])
+    {
+        this->Level = (this->Level + 1) % 4;
+        this->KeysProcessed[GLFW_KEY_W] = true;
+    }
+    if (this->Keys[GLFW_KEY_S] && !this->KeysProcessed[GLFW_KEY_S])
+    {
+        if (this->Level > 0)
+            --this->Level;
+        else
+            this->Level = 3;
+        //this->Level = (this->Level - 1) % 4;
+        this->KeysProcessed[GLFW_KEY_S] = true;
+    }
+}
+
+void Game::ProcessInputGameActive(float dt) 
+{
+    float velocity = PLAYER_VELOCITY * dt;
+    // move playerboard
+    if (this->Keys[GLFW_KEY_A])
+    {
+        if (Player->Position.x >= 0.0f)
         {
-            this->State = GAME_ACTIVE;
-            this->KeysProcessed[GLFW_KEY_ENTER] = true;
-        }
-        if (this->Keys[GLFW_KEY_W] && !this->KeysProcessed[GLFW_KEY_W])
-        {
-            this->Level = (this->Level + 1) % 4;
-            this->KeysProcessed[GLFW_KEY_W] = true;
-        }
-        if (this->Keys[GLFW_KEY_S] && !this->KeysProcessed[GLFW_KEY_S])
-        {
-            if (this->Level > 0)
-                --this->Level;
-            else
-                this->Level = 3;
-            //this->Level = (this->Level - 1) % 4;
-            this->KeysProcessed[GLFW_KEY_S] = true;
+            Player->Position.x -= velocity;
+            if (Ball->Stuck)
+                Ball->Position.x -= velocity;
         }
     }
-    if (this->State == GAME_WIN)
+    if (this->Keys[GLFW_KEY_D])
     {
-        if (this->Keys[GLFW_KEY_ENTER])
+        if (Player->Position.x <= this->Width - Player->Size.x)
         {
-            this->KeysProcessed[GLFW_KEY_ENTER] = true;
-            Effects->Chaos = false;
-            this->State = GAME_MENU;
+            Player->Position.x += velocity;
+            if (Ball->Stuck)
+                Ball->Position.x += velocity;
         }
     }
-    if (this->State == GAME_ACTIVE)
+    if (this->Keys[GLFW_KEY_SPACE])
+        Ball->Stuck = false;
+}
+
+void Game::ProcessInputGameWin()
+{
+    if (this->Keys[GLFW_KEY_ENTER])
     {
-        float velocity = PLAYER_VELOCITY * dt;
-        // move playerboard
-        if (this->Keys[GLFW_KEY_A])
-        {
-            if (Player->Position.x >= 0.0f)
-            {
-                Player->Position.x -= velocity;
-                if (Ball->Stuck)
-                    Ball->Position.x -= velocity;
-            }
-        }
-        if (this->Keys[GLFW_KEY_D])
-        {
-            if (Player->Position.x <= this->Width - Player->Size.x)
-            {
-                Player->Position.x += velocity;
-                if (Ball->Stuck)
-                    Ball->Position.x += velocity;
-            }
-        }
-        if (this->Keys[GLFW_KEY_SPACE])
-            Ball->Stuck = false;
+        this->KeysProcessed[GLFW_KEY_ENTER] = true;
+        Effects->Chaos = false;
+        this->State = GAME_MENU;
     }
 }
 

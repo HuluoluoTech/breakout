@@ -12,11 +12,21 @@
 #include <fstream>
 #include <sstream>
 
+/***********************************************************************
+ * 
+ * 
+ *  • A number of 0: no brick, an empty space within the level.
+ *  • A number of 1: a solid brick, a brick that cannot be destroyed.
+ *  • A number higher than 1: a destroyable brick; each subsequent number only differs in color.
+ *
+ *  
+ * *****************************************************************************/
 
 void GameLevel::Load(const char *file, unsigned int levelWidth, unsigned int levelHeight)
 {
     // clear old data
     this->Bricks.clear();
+
     // load from file
     unsigned int tileCode;
     GameLevel level;
@@ -29,6 +39,7 @@ void GameLevel::Load(const char *file, unsigned int levelWidth, unsigned int lev
         {
             std::istringstream sstream(line);
             std::vector<unsigned int> row;
+            // The extraction operator will read until whitespace is reached or until the stream fails.
             while (sstream >> tileCode) // read each word separated by spaces
                 row.push_back(tileCode);
             tileData.push_back(row);
@@ -57,7 +68,8 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
 {
     // calculate dimensions
     unsigned int height = tileData.size();
-    unsigned int width = tileData[0].size(); // note we can index vector at [0] since this function is only called if height > 0
+    unsigned int width  = tileData[0].size(); // note we can index vector at [0] since this function is only called if height > 0
+
     float unit_width = levelWidth / static_cast<float>(width), unit_height = levelHeight / height; 
     // initialize level tiles based on tileData		
     for (unsigned int y = 0; y < height; ++y)
@@ -69,13 +81,17 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
             {
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
+
                 GameObject obj(pos, size, ResourceManager::GetTexture("block_solid"), glm::vec3(0.8f, 0.8f, 0.7f));
+
                 obj.IsSolid = true;
+
                 this->Bricks.push_back(obj);
             }
             else if (tileData[y][x] > 1)	// non-solid; now determine its color based on level data
             {
                 glm::vec3 color = glm::vec3(1.0f); // original: white
+
                 if (tileData[y][x] == 2)
                     color = glm::vec3(0.2f, 0.6f, 1.0f);
                 else if (tileData[y][x] == 3)
@@ -87,6 +103,7 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
 
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
+                
                 this->Bricks.push_back(GameObject(pos, size, ResourceManager::GetTexture("block"), color));
             }
         }
