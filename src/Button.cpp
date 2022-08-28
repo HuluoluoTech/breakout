@@ -1,4 +1,5 @@
 #include "Button.h"
+#include <iostream>
 
 glm::vec2 Button::GetPosition()
 {
@@ -12,5 +13,5 @@ glm::vec2 Button::GetSize()
 
 void Button::Draw(SpriteRenderer &renderer)
 {
-    renderer.DrawSprite(this->Sprite, this->Position, this->Size, this->Rotation, this->Color);
+    renderer.DrawSprite(this->Sprite, this->Position, this->Size);
 }

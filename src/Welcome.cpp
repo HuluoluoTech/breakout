@@ -43,7 +43,7 @@ void Welcome::Init() noexcept
     // start button
     glm::vec2 buttonSize        = glm::vec2(this->Width / 2.0f - 100 / 2.0f, 90.f);
 
-    const float paddingToTop = (this->Height - buttonSize.y * 3 - padding * 2 ) / 2.f;
+    const float paddingToTop    = (this->Height - buttonSize.y * 3 - padding * 2 ) / 2.f;
 
     glm::vec2 startButtonPos    = glm::vec2(this->Width / 2.0f - buttonSize.x / 2.0f, paddingToTop);
     Texture2D startButtonSprite = ResourceManager::GetTexture("startbutton");
@@ -53,6 +53,8 @@ void Welcome::Init() noexcept
         startButtonSprite,
         [](glm::vec2 pos) {
             std::cout << "Start Action..." << std::endl;
+
+
         }
     );
 
@@ -83,7 +85,32 @@ void Welcome::Init() noexcept
 
 void Welcome::Render()
 {
-    this->Draw(*Renderer);
+    switch(m_state)
+    {
+        case State::INIT:
+        {
+            this->Draw(*Renderer);
+            break;            
+        }
+        case State::START:
+        {
+            if(this->m_game == nullptr) 
+            {
+                this->m_game = new Game(this->Width, this->Height);
+                this->m_game->Init();
+            }
+
+            if(this->m_game)
+            {
+                // Render
+                this->m_game->Render();
+            }
+
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 void Welcome::Draw(SpriteRenderer &renderer)
@@ -98,7 +125,7 @@ void Welcome::Draw(SpriteRenderer &renderer)
     this->AboutButton->Draw(renderer);
 }
 
-void Welcome::Update()
+void Welcome::Update(float dt)
 {
     // iff click position changed, then update
     if(this->m_xpos != _xpos && this->m_ypos != _ypos) 
@@ -107,6 +134,11 @@ void Welcome::Update()
         this->m_ypos = _ypos;
 
         this->_onButtonAction();
+    }
+
+    if(this->m_game)
+    {
+        this->m_game->Update(dt);
     }
 }
 
@@ -117,6 +149,8 @@ void Welcome::_onButtonAction()
     // if click start button
     if(this->_onClickButton(StartButton))
     {
+        this->m_state = State::START;
+
         StartButton->Callback(param);
 
         return;
@@ -125,6 +159,8 @@ void Welcome::_onButtonAction()
     // or if click exit button
     if(this->_onClickButton(ExitButton))
     {
+        this->m_state = State::EXIT;
+
         ExitButton->Callback(param);
 
         return;
@@ -133,6 +169,8 @@ void Welcome::_onButtonAction()
     // or if click about button
     if(this->_onClickButton(AboutButton))
     {
+        this->m_state = State::ABOUT;
+
         AboutButton->Callback(param);
 
         return;

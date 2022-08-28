@@ -7,6 +7,15 @@
 #include <memory>
 #include <iostream>
 #include <GLFW/glfw3.h>
+#include "game.h"
+
+enum class State
+{
+    INIT,
+    START,
+    EXIT,
+    ABOUT
+};
 
 class Welcome : public Display
 {
@@ -25,7 +34,7 @@ public:
 public:
     void Render();
     void Draw(SpriteRenderer &renderer) override;
-    void Update();
+    void Update(float dt);
 
 private:
     void _onButtonAction();
@@ -43,4 +52,10 @@ private:
     SpriteRenderer *Renderer;
     double m_xpos{0.};
     double m_ypos{0.};
+
+    State m_state{State::INIT};
+
+private:
+    //scenes
+    Game *m_game{nullptr};
 };
