@@ -6,6 +6,7 @@
 #include "texture.h"
 #include "text_renderer.h"
 #include <learnopengl/filesystem.h>
+#include <GLFW/glfw3.h>
 
 // Define button types
 enum class ButtonType
@@ -15,7 +16,7 @@ enum class ButtonType
     RoundCorner,
 };
 
-using ButtonAction = std::function<void (glm::vec2 pos)>;
+using ButtonAction = std::function<void (GLFWwindow *window, glm::vec2 pos)>;
 
 class Button : public Display
 {

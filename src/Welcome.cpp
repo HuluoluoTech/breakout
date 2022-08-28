@@ -52,7 +52,7 @@ void Welcome::Init() noexcept
         startButtonPos,
         buttonSize,
         startButtonSprite,
-        [](glm::vec2 pos) {
+        [](GLFWwindow *window, glm::vec2 pos) {
             std::cout << "Start Action..." << std::endl;
 
 
@@ -67,8 +67,10 @@ void Welcome::Init() noexcept
         exitButtonPos,
         buttonSize,
         exitButtonSprite,
-        [](glm::vec2 pos) {
+        [](GLFWwindow *window, glm::vec2 pos) {
             std::cout << "Exit Action..." << std::endl;
+
+            glfwSetWindowShouldClose(window, true);
         }
     );
     ExitButton->SetTitle("Exit");
@@ -80,7 +82,7 @@ void Welcome::Init() noexcept
         aboutButtonPos,
         buttonSize,
         aboutButtonSprite,
-        [](glm::vec2 pos) {
+        [](GLFWwindow *window, glm::vec2 pos) {
             std::cout << "About Action..." << std::endl;
         }
     );
@@ -188,7 +190,7 @@ void Welcome::_onButtonAction()
     {
         this->m_state = State::START;
 
-        StartButton->Callback(param);
+        StartButton->Callback(this->Window, param);
 
         return;
     }
@@ -198,7 +200,7 @@ void Welcome::_onButtonAction()
     {
         this->m_state = State::EXIT;
 
-        ExitButton->Callback(param);
+        ExitButton->Callback(this->Window, param);
 
         return;
     }
@@ -208,7 +210,7 @@ void Welcome::_onButtonAction()
     {
         this->m_state = State::ABOUT;
 
-        AboutButton->Callback(param);
+        AboutButton->Callback(this->Window, param);
 
         return;
     }
