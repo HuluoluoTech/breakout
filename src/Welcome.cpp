@@ -42,7 +42,7 @@ void Welcome::Init() noexcept
     
     const float padding = 30.0f;
     // start button
-    glm::vec2 buttonSize        = glm::vec2(this->Width / 2.0f - 100 / 2.0f, 90.f);
+    glm::vec2 buttonSize        = glm::vec2(this->Width / 2.0f - 600 / 2.0f, 90.f);
 
     const float paddingToTop    = (this->Height - buttonSize.y * 3 - padding * 2 ) / 2.f;
 
