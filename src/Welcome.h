@@ -23,7 +23,12 @@ public:
     // received signal SIGSEGV, Segmentation fault
     // ---> Rendered Need to be initialized... 
     Welcome(GLFWwindow *window, unsigned int width, unsigned int height) noexcept
-    : Window(window), Width(width), Height(height), Renderer(nullptr)
+    : Width(width), Height(height), Renderer(nullptr)
+    {
+        std::cout << "Welcome constructor..." << std::endl;
+    }
+    Welcome(unsigned int width, unsigned int height) noexcept
+    : Width(width), Height(height), Renderer(nullptr)
     {
         std::cout << "Welcome constructor..." << std::endl;
     }
@@ -35,6 +40,11 @@ public:
     void Render();
     void Draw(SpriteRenderer &renderer) override;
     void Update(float dt);
+    void ProcessInput(float dt);
+
+public:
+    Game* GetGame() { return this->m_game; }
+    void SetWindow(GLFWwindow *window) { Window = window; }
 
 private:
     void _onButtonAction();

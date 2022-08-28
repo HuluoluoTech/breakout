@@ -83,6 +83,28 @@ void Welcome::Init() noexcept
     );
 }
 
+void Welcome::ProcessInput(float dt)
+{
+    switch(m_state)
+    {
+        case State::INIT:
+        {
+            break;
+        }
+        case State::START:
+        {
+            if(m_game)
+            {
+                m_game->ProcessInput(dt);
+            }
+
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 void Welcome::Render()
 {
     switch(m_state)
@@ -128,17 +150,28 @@ void Welcome::Draw(SpriteRenderer &renderer)
 void Welcome::Update(float dt)
 {
     // iff click position changed, then update
-    if(this->m_xpos != _xpos && this->m_ypos != _ypos) 
+    switch (m_state)
     {
-        this->m_xpos = _xpos;
-        this->m_ypos = _ypos;
+    case State::INIT:
+        {
+            if(this->m_xpos != _xpos && this->m_ypos != _ypos) 
+            {
+                this->m_xpos = _xpos;
+                this->m_ypos = _ypos;
 
-        this->_onButtonAction();
+                this->_onButtonAction();
+            }
+        }
+        break;
+    case State::START:
+    {
+        if(this->m_game)
+        {
+            this->m_game->Update(dt);
+        }
     }
-
-    if(this->m_game)
-    {
-        this->m_game->Update(dt);
+    default:
+        break;
     }
 }
 

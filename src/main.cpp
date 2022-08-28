@@ -28,6 +28,7 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
 // Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
+Welcome WelcomePage(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main(int argc, char *argv[])
 {
@@ -60,7 +61,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    Welcome WelcomePage(window, SCREEN_WIDTH, SCREEN_HEIGHT);
+    WelcomePage.SetWindow(window);
 
     // sets the key callback of the specified window, which is called when a key is pressed, repeated or released.
     // callback signature:
@@ -115,6 +116,7 @@ int main(int argc, char *argv[])
         // manage user input
         // -----------------
         // Breakout.ProcessInput(deltaTime);
+        WelcomePage.ProcessInput(deltaTime);
 
         // update game state
         // -----------------
@@ -182,6 +184,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
         //     Breakout.Keys[key] = false;
         //     Breakout.KeysProcessed[key] = false;
         // }
+
+        if (action == GLFW_PRESS)
+            WelcomePage.GetGame()->Keys[key] = true;
+        else if (action == GLFW_RELEASE)
+        {
+            WelcomePage.GetGame()->Keys[key] = false;
+            WelcomePage.GetGame()->KeysProcessed[key] = false;
+        }
     }
 }
 
