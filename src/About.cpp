@@ -4,8 +4,11 @@
 
 static std::string about = R"(This is breakout's about page.)";
 
-About::About() noexcept
+About::About(unsigned int width, unsigned int height) noexcept
 {
+    this->Width = width;
+    this->Height = height;
+
     Text = new TextRenderer(800, 600);
     Text->Load(FileSystem::getPath("resources/fonts/OCRAEXT.TTF").c_str(), 12);
 
@@ -25,6 +28,8 @@ About::About() noexcept
     );
     BackButton->SetTitle("Back");
     BackButton->UseText();
+    
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/background.jpg").c_str(),  false, "background");
 }
 
 void About::SetBack(bool isBack)
@@ -65,6 +70,9 @@ void About::Update(float dt)
 
 void About::Draw(SpriteRenderer &renderer)
 {
+    Texture2D texture2d = ResourceManager::GetTexture("background");
+    renderer.DrawSprite(texture2d, glm::vec2(0.0f, 0.0f), glm::vec2(this->Width, this->Height), 0.0f);
+
     // back button
     // TextBack->RenderText("<", 0, 0.0, 10.0f, {{(1.0F)}, {(1.0F)}, {(.0F)}});
     BackButton->Draw(renderer);

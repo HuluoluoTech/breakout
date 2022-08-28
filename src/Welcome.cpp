@@ -149,7 +149,7 @@ void Welcome::Render()
             // https://gcc.gnu.org/onlinedocs/gcc-4.4.7/gcc/C_002b_002b-Dialect-Options.html
             if(this->m_about == nullptr)
             {
-                this->m_about = new About();
+                this->m_about = new About(this->Width, this->Height);
             }
 
             if(this->m_about->GetBack()) 

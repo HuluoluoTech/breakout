@@ -9,7 +9,7 @@
 class About : public Display
 {
 public:
-    About() noexcept;
+    About(unsigned int width, unsigned int height) noexcept;
     void Draw(SpriteRenderer &renderer) override;
     ~About(){ delete Text; }
 
@@ -24,4 +24,7 @@ private:
     TextRenderer   *TextBack{nullptr}; 
     std::unique_ptr<Button> BackButton;
     bool IsBack{false};
+
+    unsigned int Width;
+    unsigned int Height;
 };
