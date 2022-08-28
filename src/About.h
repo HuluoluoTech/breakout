@@ -11,6 +11,10 @@ public:
     void Draw(SpriteRenderer &renderer) override;
     ~About(){ delete Text; }
 
+public:
+    void Back();
+
 private:
     TextRenderer   *Text{nullptr}; 
+    TextRenderer   *TextBack{nullptr}; 
 };
