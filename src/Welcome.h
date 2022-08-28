@@ -1,6 +1,7 @@
 /************************
  * Welcome Front page
  ***********************/
+#pragma once
 
 #include "Display.h"
 #include "Button.h"
@@ -8,6 +9,8 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include "game.h"
+
+class About;
 
 enum class State
 {
@@ -67,5 +70,6 @@ private:
 
 private:
     //scenes
-    Game *m_game{nullptr};
+    Game  *m_game{nullptr};
+    About *m_about{nullptr};
 };

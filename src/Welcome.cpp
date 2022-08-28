@@ -1,10 +1,10 @@
 #include "Welcome.h"
 #include <learnopengl/filesystem.h>
 #include "resource_manager.h"
+#include "About.h"
 
 double _xpos = 0.;
 double _ypos = 0.;
-
 
 void Welcome::Init() noexcept
 {
@@ -54,8 +54,6 @@ void Welcome::Init() noexcept
         startButtonSprite,
         [](GLFWwindow *window, glm::vec2 pos) {
             std::cout << "Start Action..." << std::endl;
-
-
         }
     );
     StartButton->SetTitle("Start");
@@ -133,6 +131,20 @@ void Welcome::Render()
                 // Render
                 this->m_game->Render();
             }
+
+            break;
+        }
+        case State::ABOUT:
+        {
+            // Welcome.cpp:(.text._ZN5AboutC2Ev[_ZN5AboutC5Ev]+0x1f): undefined reference to `vtable for About'
+            // #TODO: Add -fno-rtti
+            // https://gcc.gnu.org/onlinedocs/gcc-4.4.7/gcc/C_002b_002b-Dialect-Options.html
+            if(this->m_about == nullptr)
+            {
+                this->m_about = new About();
+            }
+
+            this->m_about->Draw(*Renderer);
 
             break;
         }
