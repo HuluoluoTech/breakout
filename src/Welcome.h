@@ -25,6 +25,11 @@ public:
 public:
     void Render();
     void Draw(SpriteRenderer &renderer) override;
+    void Update();
+
+private:
+    void _onButtonAction();
+    bool _onClickButton(std::unique_ptr<Button>& button);
 
 private:
     GLFWwindow *Window;
@@ -36,4 +41,6 @@ private:
     std::unique_ptr<Button> AboutButton;
 
     SpriteRenderer *Renderer;
+    double m_xpos{0.};
+    double m_ypos{0.};
 };

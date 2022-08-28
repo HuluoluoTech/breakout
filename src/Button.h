@@ -20,10 +20,15 @@ class Button : public Display
 public:
     Button(){}
     Button(glm::vec2 position, glm::vec2 size, Texture2D sprite, ButtonAction action)
-    : Position(position), Size(size), Sprite(sprite), Action(action) {}
+    : Position(position), Size(size), Sprite(sprite), Callback(action) {}
 
 public:
     void Draw(SpriteRenderer &renderer) override;
+
+public:
+    ButtonAction    Callback;
+    glm::vec2       GetPosition();
+    glm::vec2       GetSize();
 
 private:
     glm::vec2 Position;
@@ -35,7 +40,6 @@ private:
      * |                |
      * ********************/
     ButtonType      Type{ButtonType::Rectangle}; 
-    ButtonAction    Action;
     Texture2D       Sprite;
     glm::vec3       Color;
     float           Rotation;

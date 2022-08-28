@@ -119,6 +119,7 @@ int main(int argc, char *argv[])
         // update game state
         // -----------------
         // Breakout.Update(deltaTime);
+        WelcomePage.Update();
 
         // render
         // ------

@@ -2,6 +2,9 @@
 #include <learnopengl/filesystem.h>
 #include "resource_manager.h"
 
+double _xpos = 0.;
+double _ypos = 0.;
+
 void Welcome::Init() noexcept
 {
     std::cout << "Welcome Init" << std::endl;
@@ -11,12 +14,17 @@ void Welcome::Init() noexcept
     });
 
     glfwSetMouseButtonCallback(this->Window, [](GLFWwindow* window, int button, int action, int mods) {
+        // click left mouse button
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
         {
             double xpos, ypos;
             //getting cursor position
             glfwGetCursorPos(window, &xpos, &ypos);
             std::cout << "Cursor Pressed Position at (" << xpos << " : " << ypos << ")" << std::endl;
+
+            // Capture click position
+            _xpos = xpos;
+            _ypos = ypos;
         }
     });
 
@@ -44,7 +52,7 @@ void Welcome::Init() noexcept
         buttonSize,
         startButtonSprite,
         [](glm::vec2 pos) {
-            std::cout << "Action..." << std::endl;
+            std::cout << "Start Action..." << std::endl;
         }
     );
 
@@ -56,7 +64,7 @@ void Welcome::Init() noexcept
         buttonSize,
         exitButtonSprite,
         [](glm::vec2 pos) {
-            std::cout << "Action..." << std::endl;
+            std::cout << "Exit Action..." << std::endl;
         }
     );
 
@@ -68,7 +76,7 @@ void Welcome::Init() noexcept
         buttonSize,
         aboutButtonSprite,
         [](glm::vec2 pos) {
-            std::cout << "Action..." << std::endl;
+            std::cout << "About Action..." << std::endl;
         }
     );
 }
@@ -88,4 +96,64 @@ void Welcome::Draw(SpriteRenderer &renderer)
     this->StartButton->Draw(renderer);
     this->ExitButton->Draw(renderer);
     this->AboutButton->Draw(renderer);
+}
+
+void Welcome::Update()
+{
+    // iff click position changed, then update
+    if(this->m_xpos != _xpos && this->m_ypos != _ypos) 
+    {
+        this->m_xpos = _xpos;
+        this->m_ypos = _ypos;
+
+        this->_onButtonAction();
+    }
+}
+
+void Welcome::_onButtonAction()
+{
+    glm::vec2 param = glm::vec2{m_xpos, m_ypos};
+
+    // if click start button
+    if(this->_onClickButton(StartButton))
+    {
+        StartButton->Callback(param);
+
+        return;
+    }
+
+    // or if click exit button
+    if(this->_onClickButton(ExitButton))
+    {
+        ExitButton->Callback(param);
+
+        return;
+    }
+
+    // or if click about button
+    if(this->_onClickButton(AboutButton))
+    {
+        AboutButton->Callback(param);
+
+        return;
+    }
+}
+
+bool Welcome::_onClickButton(std::unique_ptr<Button>& button)
+{
+    std::cout << "Welcome::_onClickButton" << std::endl;
+
+    // Get button's AABB
+    glm::vec2 pos  = button->GetPosition();
+    glm::vec2 size = button->GetSize();
+
+    if (m_xpos >= pos.x && 
+        m_ypos >= pos.y && 
+        m_xpos <= pos.x + size.x &&
+        m_ypos <= pos.y + size.y)
+    {
+        return true;
+    }
+
+    return false;
 }
