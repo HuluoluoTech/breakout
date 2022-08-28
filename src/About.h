@@ -2,6 +2,8 @@
 
 #include "Display.h"
 #include "text_renderer.h"
+#include "Button.h"
+#include <memory>
 
 // class TextRenderer;
 class About : public Display
@@ -12,9 +14,14 @@ public:
     ~About(){ delete Text; }
 
 public:
-    void Back();
+    void SetBack(bool isBack);
+    bool GetBack() const;
+    void ProcessInput(double xpos, double ypos);
+    void Update(float dt);
 
 private:
     TextRenderer   *Text{nullptr}; 
     TextRenderer   *TextBack{nullptr}; 
+    std::unique_ptr<Button> BackButton;
+    bool IsBack{false};
 };

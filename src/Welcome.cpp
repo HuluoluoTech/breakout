@@ -104,6 +104,14 @@ void Welcome::ProcessInput(float dt)
 
             break;
         }
+        case State::ABOUT:
+        {
+            if(m_about) 
+            {
+                m_about->ProcessInput(m_xpos, m_ypos);
+            }
+            break;
+        }
         default:
             break;
     }
@@ -142,6 +150,12 @@ void Welcome::Render()
             if(this->m_about == nullptr)
             {
                 this->m_about = new About();
+            }
+
+            if(this->m_about->GetBack()) 
+            {
+                m_state = State::INIT;
+                return;
             }
 
             this->m_about->Draw(*Renderer);
@@ -188,6 +202,19 @@ void Welcome::Update(float dt)
             this->m_game->Update(dt);
         }
     }
+    case State::ABOUT:
+    {
+        if(this->m_about)
+        {
+            if(this->m_xpos != _xpos && this->m_ypos != _ypos) 
+            {
+                this->m_xpos = _xpos;
+                this->m_ypos = _ypos;
+            }
+            this->m_about->Update(dt);
+        }
+        break;
+    }
     default:
         break;
     }
@@ -221,7 +248,10 @@ void Welcome::_onButtonAction()
     if(this->_onClickButton(AboutButton))
     {
         this->m_state = State::ABOUT;
-
+        if(m_about)
+        {
+            this->m_about->SetBack(false); // reset
+        }
         AboutButton->Callback(this->Window, param);
 
         return;
