@@ -71,7 +71,7 @@ void Welcome::Init() noexcept
             std::cout << "Exit Action..." << std::endl;
         }
     );
-    StartButton->SetTitle("Exit");
+    ExitButton->SetTitle("Exit");
 
     // about button
     glm::vec2 aboutButtonPos    = glm::vec2(this->Width / 2.0f - buttonSize.x / 2.0f, exitButtonPos.y + buttonSize.y + padding);
@@ -84,7 +84,7 @@ void Welcome::Init() noexcept
             std::cout << "About Action..." << std::endl;
         }
     );
-    StartButton->SetTitle("About");
+    AboutButton->SetTitle("About");
 }
 
 void Welcome::ProcessInput(float dt)

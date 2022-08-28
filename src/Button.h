@@ -23,7 +23,7 @@ public:
     Button(){}
     Button(glm::vec2 position, glm::vec2 size, Texture2D sprite, ButtonAction action)
     : Position(position), Size(size), Sprite(sprite), Callback(action) {
-        Text = new TextRenderer(Size.x, Size.y);
+        Text = new TextRenderer(800, 600);
         Text->Load(FileSystem::getPath("resources/fonts/OCRAEXT.TTF").c_str(), 24);
     }
 
@@ -36,6 +36,8 @@ public:
     glm::vec2       GetSize();
     void            SetTitle(const std::string& title);
     std::string     GetTitle() const;
+    void            UseTexture(); // texture or text
+    void            UseText();
 
 private:
     glm::vec2 Position;
@@ -52,4 +54,5 @@ private:
     float           Rotation;
     TextRenderer   *Text{nullptr};
     std::string     Title;
+    bool            IsUseText{true};
 };

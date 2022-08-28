@@ -20,9 +20,20 @@ std::string Button::GetTitle() const
 {
     return this->Title;
 }
+void Button::UseTexture()
+{
+    IsUseText = false;
+}
+void Button::UseText()
+{
+    IsUseText = true;
+}
 
 void Button::Draw(SpriteRenderer &renderer)
 {
-    renderer.DrawSprite(this->Sprite, this->Position, this->Size);
-    // Text->RenderText(Title, 250., this->Position.y, 1.0f);
+    if (IsUseText) {
+        Text->RenderText(Title, 350, Position.y, 1.0f, {{(1.0F)}, {(1.0F)}, {(.0F)}});
+    } else {
+        renderer.DrawSprite(this->Sprite, this->Position, this->Size);
+    }
 }
