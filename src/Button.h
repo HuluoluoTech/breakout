@@ -4,6 +4,8 @@
 #include <functional>
 #include "Display.h"
 #include "texture.h"
+#include "text_renderer.h"
+#include <learnopengl/filesystem.h>
 
 // Define button types
 enum class ButtonType
@@ -20,7 +22,10 @@ class Button : public Display
 public:
     Button(){}
     Button(glm::vec2 position, glm::vec2 size, Texture2D sprite, ButtonAction action)
-    : Position(position), Size(size), Sprite(sprite), Callback(action) {}
+    : Position(position), Size(size), Sprite(sprite), Callback(action) {
+        Text = new TextRenderer(Size.x, Size.y);
+        Text->Load(FileSystem::getPath("resources/fonts/OCRAEXT.TTF").c_str(), 24);
+    }
 
 public:
     void Draw(SpriteRenderer &renderer) override;
@@ -29,6 +34,8 @@ public:
     ButtonAction    Callback;
     glm::vec2       GetPosition();
     glm::vec2       GetSize();
+    void            SetTitle(const std::string& title);
+    std::string     GetTitle() const;
 
 private:
     glm::vec2 Position;
@@ -43,4 +50,6 @@ private:
     Texture2D       Sprite;
     glm::vec3       Color;
     float           Rotation;
+    TextRenderer   *Text{nullptr};
+    std::string     Title;
 };

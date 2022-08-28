@@ -170,27 +170,37 @@ int main(int argc, char *argv[])
  */
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
+    std::cout << "Key callback...key : " << key << std::endl;
     // GLFW_KEY_ESCAPE == 256
     // when a user presses the escape key, we set the WindowShouldClose property to true, closing the application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (key >= 0 && key < 1024)
-    {
-        // if (action == GLFW_PRESS)
-        //     Breakout.Keys[key] = true;
-        // else if (action == GLFW_RELEASE)
-        // {
-        //     Breakout.Keys[key] = false;
-        //     Breakout.KeysProcessed[key] = false;
-        // }
-
-        if (action == GLFW_PRESS)
-            WelcomePage.GetGame()->Keys[key] = true;
-        else if (action == GLFW_RELEASE)
+    if(WelcomePage.GetGame()) {
+        if (key >= 0 && key < 1024)
         {
-            WelcomePage.GetGame()->Keys[key] = false;
-            WelcomePage.GetGame()->KeysProcessed[key] = false;
+            // if (action == GLFW_PRESS)
+            //     Breakout.Keys[key] = true;
+            // else if (action == GLFW_RELEASE)
+            // {
+            //     Breakout.Keys[key] = false;
+            //     Breakout.KeysProcessed[key] = false;
+            // }
+
+            if (action == GLFW_PRESS)
+            {
+                std::cout << "action.1" << std::endl;
+                WelcomePage.GetGame()->Keys[key] = true;
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                std::cout << "action.2" << std::endl;
+                WelcomePage.GetGame()->Keys[key] = false;
+                WelcomePage.GetGame()->KeysProcessed[key] = false;
+            }
+            else 
+            {
+            }
         }
     }
 }
