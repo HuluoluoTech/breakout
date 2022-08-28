@@ -1,6 +1,8 @@
-# breakout
+# Breakout
+A clean OpenGL project.
 
-A clean OpenGL project about breakout.
+# Review
+![img](./docs/snapshot/homepage.png)
 
 # How to use
 ```shell
@@ -11,6 +13,7 @@ make
 ```
 
 # Features
+* welcome
 * OpenGL only
 * Sprites rendering
 * Game Levels
