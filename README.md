@@ -1,14 +1,14 @@
-# Breakout
+# Breakout ![](https://tokei.rs/b1/github/HuluoluoTech/breakout)
+
 A clean OpenGL project.
 
 # Review
 ![img](./docs/snapshot/homepage.png)
 
-# How to use
+# Run
 ```shell
 mkdir my_build & cd my_build
-cmake ..
-make 
+cmake .. && make 
 ./breakout
 ```
 
