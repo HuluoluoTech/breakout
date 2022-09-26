@@ -13,8 +13,8 @@ cmake .. && make
 ```
 
 # Features
-* welcome
-* OpenGL only
+* MainMenu
+* OpenGL API
 * Sprites rendering
 * Game Levels
 * Collision detection
